@@ -4,11 +4,19 @@ This is a work in progress. There needs to be a function for each CSS property.
 
     class CCS
 
-        constructor: (realm) ->
+        constructor: (realm, @css="") ->
 
             @stack = [{}]
             realm.apply @
             @tree = do @stack.pop
+
+            @css += do stringify = (tree=@tree) ->
+
+                css = ""
+                for key, value of tree then css +=
+                    if value is Object value then "\n#{key} {#{stringify value}\n}"
+                    else "\n#{key}: #{value};"
+                css
 
         selector: (selector, realm) ->
 

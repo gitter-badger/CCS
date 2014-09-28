@@ -1,7 +1,6 @@
-CCS
-===
+# Cascading Coffee Scripts
 
-Cascading Coffee Scripts is a simple CoffeeScript class that constructs Cascading Style
+CCS is a simple CoffeeScript class that constructs Cascading Style
 Sheets from functions. The project is **not** currently ready for use.
 
 To use CCS, you pass the constructor a function which defines the styles.
@@ -26,7 +25,7 @@ To use CCS, you pass the constructor a function which defines the styles.
 
         @selector ".spam", -> @color colors.red
 
-If you ran that code, then `styles.tree` would evaluate to:
+If you ran that code, then `styles.tree` would evaluate to...
 
     {
         ".foo": {
@@ -42,9 +41,10 @@ If you ran that code, then `styles.tree` would evaluate to:
         }
     }
 
+...and `styles.css` would evaluate to the CSS string.
+
 ## Limitations
 
 The property functions, like `@font`, need implementing. Only examples currently exist.
-The function that converts the tree to a string has yet to be pushed too.
 
 It's a work in progress.

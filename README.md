@@ -7,44 +7,80 @@ To use CCS, you pass the constructor a function which defines the styles.
 
     styles = new CCS ->
 
-        fonts =
-            mono: "Ubuntu Mono"
-            sans: "Comic Sans"
+        # This is a user defined enclosure. @ is always the new
+        # CCS instance.
 
-        colors =
-            red: "#FF0000"
-            background: "#EEEEFF"
+        red = "#FF0000"
+        bgColor = "#EEEEFF"
+        fonts = mono: "Ubuntu Mono", sans: "Comic Sans"
 
-        @selector ".foo", ->
+        # You can define brushes using @brush as a setter.
+
+        @brush "sansPink", ->
+            @font "sans"
+            @color "pink"
+
+        # You can extend and overload the methods of the new CCS instance.
+
+        @foo = (bottom) ->
+            @font fonts.sans
+            @setPosition "fixed", 0, 0, bottom, 25
+
+        # Once the scope and context are set up, the stylesheet is defined.
+
+        @selector ".fooClass", ->
             @font fonts.mono
-            @bgColor colors.background
-
-            @selector ".bar", ->
-                @font fonts.sans
+            @bgColor bgColor
+            @lineHeight @em 0.5
+            @selector ".fooChildClass", ->
+                @brush "sansPink"
                 @size 12
-
-        @selector ".spam", -> @color colors.red
+        @selector ".spamClass", ->
+            @color red
+            @foo 105
 
 If you ran that code, then `styles.tree` would evaluate to...
 
     {
-        ".foo": {
-            "font-family": "Ubuntu Mono",
+        ".fooClass": {
+            "font": "Ubuntu Mono",
             "background-color": "#EEEEFF",
-            ".bar": {
-                "font-family": "Comic Sans",
+            "line-height": "0.5em",
+            ".fooChildClass": {
+                "font": "sans",
+                "color": "pink",
                 "font-size": "12px"
             }
         },
-        ".spam": {
-            "color": "#FF0000"
+        ".spamClass": {
+            "color": "#FF0000",
+            "font": "Comic Sans",
+            "position": "fixed",
+            "top": "0",
+            "right": "0",
+            "bottom": "105px",
+            "left": "25px"
         }
     }
 
-...and `styles.css` would evaluate to the CSS string.
+...and `styles.css` would evaluate to...
 
-## Limitations
-
-The property functions, like `@font`, need implementing. Only examples currently exist.
-
-It's a work in progress.
+    .fooClass {
+    font: Ubuntu Mono;
+    background-color: #EEEEFF;
+    line-height: 0.5em;
+    .fooChildClass {
+    font: sans;
+    color: pink;
+    font-size: 12px;
+    }
+    }
+    .spamClass {
+    color: #FF0000;
+    font: Comic Sans;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 105px;
+    left: 25px;
+    }
